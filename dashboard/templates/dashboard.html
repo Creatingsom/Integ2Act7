@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Performance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Student Scores</h2>
+<a href="/form/">Add Student</a>
+
+<!-- Table placeholder -->
+<h3>Student Data</h3>
+<table id="studentTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Table rows will be added by JS -->
+    </tbody>
+</table>
+
+<canvas id="scoreChart"></canvas>
+
+<h3>Score Distribution</h3>
+<canvas id="pieChart"></canvas>
+
+<script>
+const names = {{ names|safe }};
+const scores = {{ scores|safe }};
+
+// Populate table dynamically
+const tableBody = document.querySelector("#studentTable tbody");
+names.forEach((name, i) => {
+    const row = document.createElement("tr");
+    const nameCell = document.createElement("td");
+    const scoreCell = document.createElement("td");
+    nameCell.textContent = name;
+    scoreCell.textContent = scores[i];
+    row.appendChild(nameCell);
+    row.appendChild(scoreCell);
+    tableBody.appendChild(row);
+});
+
+// Line chart
+const ctx = document.getElementById('scoreChart');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: names,
+        datasets: [{
+            label: 'Scores',
+            data: scores,
+            borderWidth: 2
+        }]
+    }
+});
+
+// Pie chart
+const pieCtx = document.getElementById('pieChart').getContext('2d');
+const pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+        labels: names,
+        datasets: [{
+            label: 'Score Distribution',
+            data: scores,
+            backgroundColor: [
+                'red', 'blue', 'green', 'orange', 'purple', 'yellow', 'pink', 'cyan'
+            ]
+        }]
+    }
+});
+</script>
+
+</body>
+</html>

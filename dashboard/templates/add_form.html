@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+</head>
+<body>
+
+<h2>Add Student Score</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    Name: <input type="text" name="name" required><br><br>
+    Score: <input type="number" name="score" required><br><br>
+    Subject: <input type="text" name="subject" required><br><br>
+    Exam Date: <input type="date" name="exam_date" required><br><br>
+
+    <button type="submit">Add</button>
+</form>
+
+</body>
+</html>
