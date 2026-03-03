@@ -1,53 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Student Performance Dashboard</title>
+    <title>Cyber Student Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background: radial-gradient(circle at top, #001a00, #000000);
+            color: #00ff99;
+            text-align: center;
+        }
+
+        h2, h3 {
+            text-shadow: 0 0 10px #00ff99;
+            letter-spacing: 2px;
+        }
+
+        a {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            border: 2px solid #00ff99;
+            color: #00ff99;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px #00ff99;
+        }
+
+        a:hover {
+            background-color: #00ff99;
+            color: black;
+            box-shadow: 0 0 20px #00ff99;
+        }
+
         table {
+            margin: 20px auto;
+            width: 60%;
             border-collapse: collapse;
-            width: 50%;
-            margin-bottom: 20px;
+            background-color: rgba(0, 255, 153, 0.05);
+            box-shadow: 0 0 20px #00ff99;
+            border: 2px solid #00ff99;
         }
+
         th, td {
-            border: 1px solid #333;
-            padding: 8px 12px;
-            text-align: left;
+            border: 1px solid #00ff99;
+            padding: 12px;
         }
+
         th {
-            background-color: #f2f2f2;
+            background-color: rgba(0, 255, 153, 0.2);
+            text-shadow: 0 0 5px #00ff99;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 255, 153, 0.1);
+            transition: 0.3s;
+        }
+
+        /* Centered & Responsive Chart */
+        #pieChart {
+            display: block;
+            margin: 40px auto;
+            max-width: 450px;
+            width: 90%;
+            background-color: rgba(0, 255, 153, 0.05);
+            border: 2px solid #00ff99;
+            box-shadow: 0 0 25px #00ff99;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .container {
+            padding-bottom: 50px;
         }
     </style>
 </head>
 <body>
 
-<h2>Student Scores</h2>
-<a href="/form/">Add Student</a>
+<div class="container">
+    <h2>⚡ CYBER STUDENT DASHBOARD ⚡</h2>
+    <a href="/form/">+ Add Student</a>
 
-<!-- Table placeholder -->
-<h3>Student Data</h3>
-<table id="studentTable">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Score</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Table rows will be added by JS -->
-    </tbody>
-</table>
+    <h3>Student Data Matrix</h3>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>NAME</th>
+                <th>SCORE</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 
-<canvas id="scoreChart"></canvas>
-
-<h3>Score Distribution</h3>
-<canvas id="pieChart"></canvas>
+    <h3>Score Distribution</h3>
+    <canvas id="pieChart"></canvas>
+</div>
 
 <script>
 const names = {{ names|safe }};
 const scores = {{ scores|safe }};
 
-// Populate table dynamically
+// Populate table
 const tableBody = document.querySelector("#studentTable tbody");
 names.forEach((name, i) => {
     const row = document.createElement("tr");
@@ -60,33 +117,40 @@ names.forEach((name, i) => {
     tableBody.appendChild(row);
 });
 
-// Line chart
-const ctx = document.getElementById('scoreChart');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: names,
-        datasets: [{
-            label: 'Scores',
-            data: scores,
-            borderWidth: 2
-        }]
-    }
-});
-
-// Pie chart
+// Neon Pie Chart
 const pieCtx = document.getElementById('pieChart').getContext('2d');
-const pieChart = new Chart(pieCtx, {
+new Chart(pieCtx, {
     type: 'pie',
     data: {
         labels: names,
         datasets: [{
-            label: 'Score Distribution',
             data: scores,
             backgroundColor: [
-                'red', 'blue', 'green', 'orange', 'purple', 'yellow', 'pink', 'cyan'
-            ]
+                '#00ff99',
+                '#00cc77',
+                '#00aa66',
+                '#00ffcc',
+                '#33ff99',
+                '#66ffcc',
+                '#00e68a'
+            ],
+            borderColor: '#000000',
+            borderWidth: 2
         }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#00ff99',
+                    font: {
+                        size: 14
+                    }
+                }
+            }
+        }
     }
 });
 </script>
